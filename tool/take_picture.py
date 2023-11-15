@@ -1,3 +1,5 @@
+import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 import cv2
 import numpy as np
 
@@ -19,7 +21,7 @@ def recognize_circle(img):
     return circles
 
 if __name__ == "__main__":
-    flag = 0
+    flag = 1
     if flag == 0:
         img = cv2.imread("1.jpg")
     else:

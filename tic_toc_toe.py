@@ -1,3 +1,5 @@
+import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 import cv2
 import numpy as np
 # import drowX 
@@ -51,16 +53,16 @@ def is_winner(board, player):
 def is_board_full(board):
     return all(board[row][col] != " " for row in range(3) for col in range(3))
 
-def get_move():
-    while True:
-        try:
-            row, col = map(int, input("Enter row and column (0-2 for each): ").split())
-            if 0 <= row <= 2 and 0 <= col <= 2:
-                return row, col
-            else:
-                print("Invalid input. Please enter numbers between 0 and 2.")
-        except ValueError:
-            print("Invalid input. Please enter two numbers separated by a space.")
+# def get_move():
+#     while True:
+#         try:
+#             row, col = map(int, input("Enter row and column (0-2 for each): ").split())
+#             if 0 <= row <= 2 and 0 <= col <= 2:
+#                 return row, col
+#             else:
+#                 print("Invalid input. Please enter numbers between 0 and 2.")
+#         except ValueError:
+#             print("Invalid input. Please enter two numbers separated by a space.")
 
 def switch_player(player):
     return "O" if player == "X" else "X"
@@ -79,7 +81,7 @@ def main():
     # ボードの初期化
     board = initialize_board()
     # playerの選択
-    current_player = "O"
+    current_player = "X"
     while True:
         print_board(board)
         if current_player == "O":
@@ -90,6 +92,7 @@ def main():
             image_new = get_image()
             image_diff = detection.compare_images(image_old, image_new)
             row, col = detection.detect_circle_and_update_board(image_diff)
+            image_old = image_new
         if current_player == "X":
             row, col = find_drow_position(board)
             print("drowX")
@@ -106,7 +109,6 @@ def main():
             current_player = switch_player(current_player)
         else:
             print("That position is already taken. Try again.")
-        image_old = image_new
 
 if __name__ == "__main__":
     main()
